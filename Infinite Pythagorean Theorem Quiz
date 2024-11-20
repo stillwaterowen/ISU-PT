@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pythagorean Theorem Quiz</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9fafc;
+      color: #333;
+    }
+    header {
+      background-color: #4a90e2;
+      color: white;
+      padding: 20px 10px;
+      text-align: center;
+    }
+    .container {
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    h1, h2 {
+      text-align: center;
+      color: #4a90e2;
+    }
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #4a90e2;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #357ab8;
+    }
+    .result {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 1.2em;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <header>
+  </header>
+  <div class="container">
+    <h2>Infinite Pythagorean Theorem Quiz</h2>
+    <div>
+      <p id="quizQuestion"></p>
+      <input type="number" id="quizAnswer" placeholder="Your answer" step="0.01">
+      <button onclick="submitQuiz()">Submit Answer</button>
+      <button onclick="generateQuestion()">Next Question</button>
+      <div class="result" id="quizResult"></div>
+    </div>
+  </div>
+  <script>
+    let currentAnswer;
+
+    // Generate a new question
+    function generateQuestion() {
+      const questionTemplates = [
+        () => {
+          const a = Math.floor(Math.random() * 20) + 1;
+          const b = Math.floor(Math.random() * 20) + 1;
+          currentAnswer = Math.sqrt(a ** 2 + b ** 2).toFixed(2);
+          return `Find the hypotenuse of a right triangle with sides a=${a} and b=${b}.`;
+        },
+        () => {
+          const c = Math.floor(Math.random() * 30) + 10;
+          const b = Math.floor(Math.random() * 20) + 1;
+          currentAnswer = Math.sqrt(c ** 2 - b ** 2).toFixed(2);
+          return `Find the missing side when the hypotenuse is c=${c} and one side is b=${b}.`;
+        },
+        () => {
+          const a = Math.floor(Math.random() * 15) + 5;
+          const b = Math.floor(Math.random() * 15) + 5;
+          const c = Math.sqrt(a ** 2 + b ** 2).toFixed(2);
+          currentAnswer = c;
+          return `Calculate the hypotenuse: a=${a}, b=${b}.`;
+        }
+      ];
+
+      // Pick a random template
+      const randomIndex = Math.floor(Math.random() * questionTemplates.length);
+      const questionText = questionTemplates[randomIndex]();
+
+      // Update the UI
+      document.getElementById("quizQuestion").textContent = questionText;
+      document.getElementById("quizResult").textContent = "";
+    }
+
+    // Validate the user's answer
+    function submitQuiz() {
+      const userAnswer = parseFloat(document.getElementById("quizAnswer").value);
+      if (isNaN(userAnswer)) {
+        document.getElementById("quizResult").textContent = "Please enter a valid number.";
+        return;
+      }
+      if (Math.abs(userAnswer - currentAnswer) < 0.01) {
+        document.getElementById("quizResult").textContent = "Correct!";
+      } else {
+        document.getElementById("quizResult").textContent = `Incorrect. The correct answer was ${currentAnswer}.`;
+      }
+    }
+
+    // Initialize the first question
+    generateQuestion();
+  </script>
+</body>
+</html>
