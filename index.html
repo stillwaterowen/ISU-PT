@@ -56,10 +56,17 @@
       font-size: 1.2em;
       color: green;
     }
+    .tracker {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 1.1em;
+      color: #4a90e2;
+    }
   </style>
 </head>
 <body>
   <header>
+    <h1>Pythagorean Theorem Quiz</h1>
   </header>
   <div class="container">
     <h2>Infinite Pythagorean Theorem Quiz</h2>
@@ -69,10 +76,16 @@
       <button onclick="submitQuiz()">Submit Answer</button>
       <button onclick="generateQuestion()">Next Question</button>
       <div class="result" id="quizResult"></div>
+      <div class="tracker">
+        <p id="correctCounter">Correct: 0</p>
+        <p id="incorrectCounter">Incorrect: 0</p>
+      </div>
     </div>
   </div>
   <script>
     let currentAnswer;
+    let correctAnswers = 0; // Initialize correct answer count
+    let incorrectAnswers = 0; // Initialize incorrect answer count
 
     // Generate a new question
     function generateQuestion() {
@@ -105,6 +118,7 @@
       // Update the UI
       document.getElementById("quizQuestion").textContent = questionText;
       document.getElementById("quizResult").textContent = "";
+      document.getElementById("quizAnswer").value = ""; // Clear previous input
     }
 
     // Validate the user's answer
@@ -115,10 +129,16 @@
         return;
       }
       if (Math.abs(userAnswer - currentAnswer) < 0.01) {
+        correctAnswers++;
         document.getElementById("quizResult").textContent = "Correct!";
       } else {
+        incorrectAnswers++;
         document.getElementById("quizResult").textContent = `Incorrect. The correct answer was ${currentAnswer}.`;
       }
+
+      // Update counters
+      document.getElementById("correctCounter").textContent = `Correct: ${correctAnswers}`;
+      document.getElementById("incorrectCounter").textContent = `Incorrect: ${incorrectAnswers}`;
     }
 
     // Initialize the first question
