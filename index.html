@@ -50,6 +50,10 @@
     button:hover {
       background-color: #357ab8;
     }
+    button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
     .result {
       text-align: center;
       margin-top: 20px;
@@ -73,7 +77,7 @@
     <div>
       <p id="quizQuestion"></p>
       <input type="number" id="quizAnswer" placeholder="Your answer" step="0.01">
-      <button onclick="submitQuiz()">Submit Answer</button>
+      <button id="submitButton" onclick="submitQuiz()">Submit Answer</button>
       <button onclick="generateQuestion()">Next Question</button>
       <div class="result" id="quizResult"></div>
       <div class="tracker">
@@ -86,7 +90,7 @@
     let currentAnswer;
     let correctAnswers = 0; // Initialize correct answer count
     let incorrectAnswers = 0; // Initialize incorrect answer count
-
+    let answerSubmitted = false; // Tracks if the user has submitted an answer
     // Generate a new question
     function generateQuestion() {
       const questionTemplates = [
@@ -119,10 +123,13 @@
       document.getElementById("quizQuestion").textContent = questionText;
       document.getElementById("quizResult").textContent = "";
       document.getElementById("quizAnswer").value = ""; // Clear previous input
-    }
+      answerSubmitted = false;
+      document.getElementById("submitButton").disabled = false;
+     }
 
     // Validate the user's answer
     function submitQuiz() {
+      if (answerSubmitted) return; // Prevent multiple submissions
       const userAnswer = parseFloat(document.getElementById("quizAnswer").value);
       if (isNaN(userAnswer)) {
         document.getElementById("quizResult").textContent = "Please enter a valid number.";
@@ -139,6 +146,8 @@
       // Update counters
       document.getElementById("correctCounter").textContent = `Correct: ${correctAnswers}`;
       document.getElementById("incorrectCounter").textContent = `Incorrect: ${incorrectAnswers}`;
+      answerSubmitted = true;
+      document.getElementById("submitButton").disabled = true;
     }
 
     // Initialize the first question
